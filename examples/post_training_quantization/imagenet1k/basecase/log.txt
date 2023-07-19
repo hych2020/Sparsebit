@@ -1,0 +1,321 @@
+|model   |w_bit  |f bit  |f Qscheme         |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---               |---      |---     |---     |---              |
+|resnet18|float32|float32| /                |/        |69.760  |89.082  |float baseline   |
+|resnet18|8      |8      |per-tensor-affine |/        |69.552  |89.022  |                 |
+|resnet18|4      |4      |per-tensor-affine |/        |25.886  |46.428  |                 |
+|resnet18|4      |4      |per-tensor-affine |/        |31.412  |55.132  |w: mse observer  |
+|resnet18|4      |4      |per-tensor-affine |/        |54.498  |78.864  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |128      |54.532  |79.016  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |64       |54.514  |78.936  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |32       |54.464  |78.860  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |32       |39.782  |64.780  |                 |
+|resnet18|4      |4      |per-group-affine  |16       |54.596  |78.878  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |16       |42.686  |67.942  |                 |
+|resnet18|4      |4      |per-group-affine  |8        |54.752  |79.184  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |4        |54.712  |79.116  |w/f: mse observer|
+
+
+|model   |w_bit  |f bit  |f Qscheme         |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---               |---      |---     |---     |---              |
+|resnet18|float32|float32| /                |/        |69.760  |89.082  |float baseline   |
+|resnet18|8      |4      |per-tensor-affine |/        |67.694  |87.960  |f: mse observer  |
+|resnet18|8      |4      |per-group-affine  |32       |67.646  |87.840  |f: mse observer  |
+|resnet18|8      |4      |per-group-affine  |16       |67.738  |87.872  |f: mse observer  |
+|resnet18|8      |4      |per-group-affine  |8        |67.982  |87.950  |f: mse observer  |
+|resnet18|8      |4      |per-group-affine  |4        |68.072  |88.012  |f: mse observer  |
+
+|model   |w_bit  |f bit  |w Qscheme         |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---               |---      |---     |---     |---              |
+|resnet18|float32|float32| /                |/        |69.760  |89.082  |float baseline   |
+|resnet18|4      |8      |per-channel-symmetric |/        |57.662  |81.274  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |128      |58.088  |81.588  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |64       |59.650  |82.864  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |32       |62.154  |84.636  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |16       |63.230  |85.032  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |8        |66.082  |86.748  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |4        |65.972  |86.664  |w: mse observer  |
+|resnet18|4      |8      |per-group-symmetric  |1        |62.764  |84.538  |w: mse observer  |
+
+|model   |w_bit  |f bit  |w Qscheme         |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---               |---      |---     |---     |---              |
+|resnet18|float32|float32| /                |/        |69.760  |89.082  |float baseline   |
+|resnet18|8      |8      |per-tensor-symmetric |/        |69.552  |89.022  |                 |
+|resnet18|4      |4      |per-tensor-symmetric |/        |54.498  |78.864  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |128      |54.990  |79.432  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |64       |56.786  |80.498  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |32       |59.900  |82.920  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |16       |60.476  |83.068  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |8        |63.724  |85.186  |w/f: mse observer|
+|resnet18|4      |4      |per-tensor-symmetric |4        |63.380  |84.828  |w/f: mse observer|
+
+
+
+
+|model   |w_bit  |f bit  |f Qscheme         |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---               |---      |---     |---     |---              |
+|resnet18|float32|float32| /                |/        |69.760  |89.082  |float baseline   |
+|resnet18|8      |8      |per-tensor-affine |/        |69.552  |89.022  |                 |
+|resnet18|4      |4      |per-tensor-affine |/        |54.498  |78.864  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |128      |54.532  |79.016  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |64       |54.514  |78.936  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |32       |54.464  |78.860  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |16       |54.596  |78.878  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |8        |54.752  |79.184  |w/f: mse observer|
+|resnet18|4      |4      |per-group-affine  |4        |54.712  |79.116  |w/f: mse observer|
+
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark                   |
+|---     |---    |---    |---                  |---      |---     |---     |---                      |
+|resnet18|float32|float32| /                   |/        |69.760  |89.082  |float baseline           |
+|resnet18|8      |8      |per-channel-symmetric|/        |69.552  |89.022  |                         |
+|resnet18|4      |4      |per-channel-symmetric|/        |54.498  |78.864  |                         |
+|resnet18|4      |4      |per-channel-symmetric|/        |54.502  |78.902  |avgpool 8bit             |
+|resnet18|4      |4      |per-channel-symmetric|/        |54.502  |78.902  |asym=True*               |
+|resnet18|4      |4      |per-channel-affine   |/        |57.598  |81.224  |                         |
+|resnet18|4      |4      |per-channel-affine   |/        |61.728  |84.158  |smooth input/weight scale|
+|resnet18|4      |4      |per-group-affine     |64       |63.374  |85.092  |同上                      |
+|resnet18|4      |4      |per-group-affine     |32       |63.186  |84.824  |同上                      |
+|resnet18|4      |4      |per-group-affine     |16       |65.718  |86.460  |同上                      |
+|resnet18|4      |4      |per-group-affine     |8        |66.102  |86.746  |同上                      |
+|resnet18|4      |4      |per-group-affine     |4        |66.274  |86.990  |同上                      |
+|resnet18|4      |4      |per-group-affine     |1        |67.368  |87.702  |同上                      |
+
+|resnet18|4      |8      |per-channel-affine   |/        |64.398  |86.008  |smooth input/weight scale|
+|resnet18|4      |8      |per-group-affine     |64       |65.858  |86.778  |同上                      |
+|resnet18|4      |8      |per-group-affine     |32       |66.072  |86.896  |同上                      |
+|resnet18|4      |8      |per-group-affine     |16       |67.556  |87.720  |同上                      |
+|resnet18|4      |8      |per-group-affine     |8        |67.992  |88.106  |同上                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.306  |88.236  |同上                      |
+|resnet18|4      |8      |per-group-affine     |1        |69.262  |88.756  |同上                      |
+
+|resnet18|4      |8      |per-channel-affine   |/        |60.666  |83.468  |                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.292  |88.254  |*feature channelwise  |
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark                   |
+|---     |---    |---    |---                  |---      |---     |---     |---                      |
+|resnet18|float32|float32| /                   |/        |69.760  |89.082  |float baseline           |
+|resnet18|8      |8      |per-channel-symmetric|/        |69.552  |89.022  |                         |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712  |83.484  |                      |
+|resnet18|4      |8      |per-group-affine     |32       |65.358  |86.334  |                      |
+|resnet18|4      |8      |per-group-affine     |16       |67.006  |87.544  |                      |
+|resnet18|4      |8      |per-group-affine     |8        |67.962  |87.984  |                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.268  |88.238  |                      |
+|resnet18|4      |8      |per-group-affine     |1        |69.222  |88.762  |                      |
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark                   |
+|---     |---    |---    |---                  |---      |---     |---     |---                      |
+|resnet18|float32|float32| /                   |/        |69.760  |89.082  |float baseline           |
+|resnet18|4      |4      |per-channel-affine   |/        |57.598  |81.224  |                       |
+|resnet18|4      |4      |per-group-affine     |32       |63.366  |84.960  |                       |
+|resnet18|4      |4      |per-group-affine     |16       |64.608  |85.820  |                       |
+|resnet18|4      |4      |per-group-affine     |8        |65.912  |86.520  |                       |
+|resnet18|4      |4      |per-group-affine     |4        |66.374  |86.906  |                       |
+|resnet18|4      |4      |per-group-affine     |1        |67.392  |87.676  |                       |
+|resnet18|4      |4      |per-group-affine     |1        |67.524  |87.726  |act_scales= absmax()   |
+|resnet18|4      |4      |per-group-affine     |1        |67.544  |87.730  |act_scales= absmax()*10|
+|resnet18|4      |4      |per-group-affine     |1        |67.526  |87.706  |act_scales= absmax()/10|
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---                  |---      |---     |---     |---              |
+|resnet50|float32|float32| /                   |/        |76.146  |92.872  |float baseline   |
+|resnet50|4      |4      |per-channel-affine   |/        |68.746  |88.706  |                       |
+|resnet50|4      |4      |per-group-affine     |32       |72.048  |90.664  |                       |
+|resnet50|4      |4      |per-group-affine     |16       |72.616  |90.968  |                       |
+|resnet50|4      |4      |per-group-affine     |8        |72.784  |91.100  |cali size:128          |
+|resnet50|4      |4      |per-group-affine     |4        |73.520  |91.586  |                       |
+|resnet50|4      |4      |per-group-affine     |1        |73.236  |91.472  |                       |
+|resnet50|4      |4      |per-group-affine     |1        |71.972  |90.744  |act_scales= absmax()   |
+|resnet50|4      |4      |per-group-affine     |1        |71.994  |90.690  |act_scales= absmax()*10|
+|resnet50|4      |4      |per-group-affine     |1        |72.016  |90.720  |act_scales= absmax()/10|
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark           |
+|---     |---    |---    |---                  |---      |---     |---     |---              |
+|resnet50|float32|float32| /                   |/        |76.146  |92.872  |float baseline   |
+|resnet50|8      |8      |per-channel-symmetric|/        |76.008  |92.860  |                 |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264  |90.944  |cali size:128          |
+|resnet50|4      |8      |per-group-affine     |32       |74.498  |91.970  |                       |
+|resnet50|4      |8      |per-group-affine     |16       |75.116  |92.522  |                       |
+|resnet50|4      |8      |per-group-affine     |8        |75.332  |92.708  |                       |
+|resnet50|4      |8      |per-group-affine     |4        |75.800  |92.740  |                       |
+|resnet50|4      |8      |per-group-affine     |1        |75.974  |92.842  |                       |
+
+
+
+### scale decomp
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |4.02                  |
+|resnet18|4      |8      |per-group-affine     |32       |65.304(65.358)  |86.290(86.334)  |4.06(4.14)            |
+|resnet18|4      |8      |per-group-affine     |16       |67.028(67.006)  |87.512(87.544)  |4.09(4.28)            |
+|resnet18|4      |8      |per-group-affine     |8        |67.910(67.962)  |88.000(87.984)  |4.15(4.56)            |
+|resnet18|4      |8      |per-group-affine     |4        |68.090(68.268)  |88.020(88.238)  |4.28(5.12)            |
+|resnet18|4      |8      |per-group-affine     |1        |68.814(69.222)  |88.404(88.762)  |5.03(8.49)            |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |4.04                  |
+|resnet50|4      |8      |per-group-affine     |32       |74.454(74.498)  |92.004(91.970)  |4.21(4.64)            |
+|resnet50|4      |8      |per-group-affine     |16       |75.128(75.116)  |92.400(92.522)  |4.36(5.28)            |
+|resnet50|4      |8      |per-group-affine     |8        |75.164(75.332)  |92.520(92.708)  |4.64(6.57)            |
+|resnet50|4      |8      |per-group-affine     |4        |75.314(75.800)  |92.470(92.740)  |5.21(9.14)            |
+|resnet50|4      |8      |per-group-affine     |1        |75.082(75.974)  |92.436(92.842)  |8.64(24.54)           |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |4.02                  |
+|resnet18|4      |8      |per-group-affine     |32       |65.304(-0.054)  |86.290(-0.044)  |4.06(-0.08)           |
+|resnet18|4      |8      |per-group-affine     |16       |67.028(+0.022)  |87.512(-0.032)  |4.09(-0.19)           |
+|resnet18|4      |8      |per-group-affine     |8        |67.910(-0.052)  |88.000(+0.016)  |4.15(-0.41)           |
+|resnet18|4      |8      |per-group-affine     |4        |68.090(-0.178)  |88.020(-0.218)  |4.28(-0.84)           |
+|resnet18|4      |8      |per-group-affine     |1        |68.814(-0.408)  |88.404(-0.358)  |5.03(-3.46)           |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |4.04                  |
+|resnet50|4      |8      |per-group-affine     |32       |74.454(-0.044)  |92.004(+0.034)  |4.21(-0.43)           |
+|resnet50|4      |8      |per-group-affine     |16       |75.128(+0.012)  |92.400(-0.122)  |4.36(-0.92)           |
+|resnet50|4      |8      |per-group-affine     |8        |75.164(-0.168)  |92.520(-0.188)  |4.64(-1.93)           |
+|resnet50|4      |8      |per-group-affine     |4        |75.314(-0.486)  |92.470(-0.270)  |5.21(-3.93)           |
+|resnet50|4      |8      |per-group-affine     |1        |75.082(-0.892)  |92.436(-0.406)  |8.64(-15.9)           |
+
+
+### reorder
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc|top5 acc|remark                |
+|---     |---    |---    |---                  |---      |---     |---     |---                   |
+|resnet18|4      |8      |per-group-affine     |4        |68.268  |88.238  |no reorder            |
+|resnet18|4      |8      |per-group-affine     |4        |68.680  |88.454  |reorder by abs-max    |
+|resnet18|4      |8      |per-group-affine     |4        |68.796  |88.524  |reorder by max        |
+|resnet18|4      |8      |per-group-affine     |8        |67.962  |87.984  |no reorder            |
+|resnet18|4      |8      |per-group-affine     |8        |68.634  |88.474  |reorder by abs-max    |
+|resnet18|4      |8      |per-group-affine     |8        |68.616  |88.428  |reorder by max        |
+|resnet50|4      |8      |per-group-affine     |8        |75.332  |92.708  |no reorder            |
+|resnet50|4      |8      |per-group-affine     |8        |75.356  |92.642  |reorder by abs-max    |
+|resnet50|4      |8      |per-group-affine     |8        |75.756  |92.760  |reorder by max        |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |                      |
+|resnet18|4      |8      |per-group-affine     |32       |66.258(65.358)  |86.828(86.334)  |                      |
+|resnet18|4      |8      |per-group-affine     |16       |68.124(67.006)  |88.124(87.544)  |                      |
+|resnet18|4      |8      |per-group-affine     |8        |68.616(67.962)  |88.428(87.984)  |                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.796(68.268)  |88.524(88.238)  |                      |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |                      |
+|resnet50|4      |8      |per-group-affine     |32       |75.494(74.498)  |92.532(91.970)  |                      |
+|resnet50|4      |8      |per-group-affine     |16       |75.580(75.116)  |92.640(92.522)  |                      |
+|resnet50|4      |8      |per-group-affine     |8        |75.756(75.332)  |92.760(92.708)  |                      |
+|resnet50|4      |8      |per-group-affine     |4        |75.848(75.800)  |92.806(92.740)  |                      |
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |4.02                  |
+|resnet18|4      |8      |per-group-affine     |32       |66.258(+0.900)  |86.828(+0.494)  |4.14                  |
+|resnet18|4      |8      |per-group-affine     |16       |68.124(+1.118)  |88.124(+0.580)  |4.28                  |
+|resnet18|4      |8      |per-group-affine     |8        |68.616(+0.654)  |88.428(+0.444)  |4.56                  |
+|resnet18|4      |8      |per-group-affine     |4        |68.796(+0.528)  |88.524(+0.286)  |5.12                  |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |4.04                  |
+|resnet50|4      |8      |per-group-affine     |32       |75.494(+0.996)  |92.532(+0.562)  |4.64                  |
+|resnet50|4      |8      |per-group-affine     |16       |75.580(+0.464)  |92.640(+0.118)  |5.28                  |
+|resnet50|4      |8      |per-group-affine     |8        |75.756(+0.424)  |92.760(+0.052)  |6.57                  |
+|resnet50|4      |8      |per-group-affine     |4        |75.848(+0.048)  |92.806(+0.066)  |9.14                  |
+
+
+
+
+
+## &&
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |                      |
+|resnet18|4      |8      |per-group-affine     |32       |66.246(65.358)  |86.822(86.334)  |                      |
+|resnet18|4      |8      |per-group-affine     |16       |68.162(67.006)  |88.222(87.544)  |                      |
+|resnet18|4      |8      |per-group-affine     |8        |67.720(67.962)  |87.930(87.984)  |                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.388(68.268)  |88.304(88.238)  |                      |
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |                      |
+|resnet50|4      |8      |per-group-affine     |32       |75.296(74.498)  |92.442(91.970)  |                      |
+|resnet50|4      |8      |per-group-affine     |16       |75.144(75.116)  |92.384(92.522)  |                      |
+|resnet50|4      |8      |per-group-affine     |8        |75.376(75.332)  |92.518(92.708)  |                      |
+|resnet50|4      |8      |per-group-affine     |4        |75.174(75.800)  |92.464(92.740)  |                      |
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |4.02                      |
+|resnet18|4      |8      |per-group-affine     |32       |66.246(+0.888)  |86.822(+0.488)  |4.06                      |
+|resnet18|4      |8      |per-group-affine     |16       |68.162(+1.156)  |88.222(+0.678)  |4.09                      |
+|resnet18|4      |8      |per-group-affine     |8        |67.720(-0.242)  |87.930(-0.054)  |4.15                      |
+|resnet18|4      |8      |per-group-affine     |4        |68.388(+0.120)  |88.304(+0.066)  |4.28                      |
+|resnet18|4      |8      |per-group-affine     |1        |68.814(-0.408)  |88.404(-0.358)  |5.03              |
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |4.04                      |
+|resnet50|4      |8      |per-group-affine     |32       |75.296(+0.798)  |92.442(+0.472)  |4.21                      |
+|resnet50|4      |8      |per-group-affine     |16       |75.144(+0.028)  |92.384(-0.138)  |4.36                      |
+|resnet50|4      |8      |per-group-affine     |8        |75.376(+0.044)  |92.518(-0.190)  |4.64                      |
+|resnet50|4      |8      |per-group-affine     |4        |75.174(-0.626)  |92.464(-0.276)  |5.21                      |
+|resnet50|4      |8      |per-group-affine     |1        |75.082(-0.892)  |92.436(-0.406)  |8.64           |
+
+
+
+####
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet18|float32|float32| /                   |/        |69.760          |89.082          |32                    |
+|resnet18|4      |8      |per-channel-affine   |/        |60.712          |83.484          |4.02                  |
+|resnet18|4      |8      |per-group-affine     |32       |66.246(-0.012)  |86.822(-0.006)  |4.06(-0.08)           |
+|resnet18|4      |8      |per-group-affine     |16       |68.162(+0.038)  |88.222(+0.098)  |4.09(-0.19)           |
+|resnet18|4      |8      |per-group-affine     |8        |67.720(-0.896)  |87.930(-0.498)  |4.15(-0.41)           |
+|resnet18|4      |8      |per-group-affine     |4        |68.388(-0.408)  |88.304(-0.320)  |4.28(-0.84)           |
+|resnet18|4      |8      |per-group-affine     |1        |68.814(-0.408)  |88.404(-0.358)  |5.03(-3.46)           |
+
+
+
+|model   |w_bit  |f bit  |w Qscheme            |groupsize|top1 acc        |top5 acc        |Equivalent wbit       |
+|---     |---    |---    |---                  |---      |---             |---             |---                   |
+|resnet50|float32|float32| /                   |/        |76.146          |92.872          |32                    |
+|resnet50|4      |8      |per-channel-affine   |/        |72.264          |90.944          |4.04                  |
+|resnet50|4      |8      |per-group-affine     |32       |75.296(-0.198)  |92.442(-0.090)  |4.21(-0.43)           |
+|resnet50|4      |8      |per-group-affine     |16       |75.144(-0.436)  |92.384(-0.256)  |4.36(-0.92)           |
+|resnet50|4      |8      |per-group-affine     |8        |75.376(-0.380)  |92.518(-0.242)  |4.64(-1.93)           |
+|resnet50|4      |8      |per-group-affine     |4        |75.174(-0.674)  |92.464(-0.342)  |5.21(-3.93)           |
+|resnet50|4      |8      |per-group-affine     |1        |75.082(-0.892)  |92.436(-0.406)  |8.64(-15.9)           |
+

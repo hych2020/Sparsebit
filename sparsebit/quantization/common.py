@@ -44,6 +44,10 @@ def get_qscheme(qscheme):
         return torch.per_channel_symmetric
     if qscheme == "per-channel-affine":
         return torch.per_channel_affine
+    if qscheme == "per-group-symmetric":
+        return torch.per_channel_symmetric
+    if qscheme == "per-group-affine":
+        return torch.per_channel_affine
     raise TypeError(
         "only support a qscheme equals to per-[tensor/channel]-[affine/symmetric] , not {}".format(
             qscheme

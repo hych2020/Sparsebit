@@ -8,6 +8,9 @@ class QuantDescriptor:
         self._target = cfg.TARGET[0]
         self._scheme = get_qscheme(cfg.QSCHEME)
         self._bit = cfg.QUANTIZER.BIT
+        self._groupsize = cfg.QUANTIZER.GROUPSIZE
+        if self._groupsize != -1:
+            assert cfg.QSCHEME in ["per-group-symmetric", "per-group-affine"]
         self._qmin, self._qmax, self._type = self.calc_qmin_qmax(
             self._bit, self._scheme
         )
@@ -105,7 +108,11 @@ class QuantDescriptor:
     def bs_axis(self):
         return self._bs_axis
 
+    @property
+    def groupsize(self):
+        return self._groupsize
+
     def __repr__(self):
-        return self._type + "\t qmin: {}  qmax: {}, qscheme: {}".format(
-            self.qmin, self.qmax, self.scheme
+        return self._type + "\t qmin: {}  qmax: {}, qscheme: {}, groupsize: {}".format(
+            self.qmin, self.qmax, self.scheme, self.groupsize
         )

@@ -32,11 +32,16 @@ class QConv2d(QuantOpr):
         )
         self.weight = org_module.weight
         self.bias = org_module.bias
+        self.act_scales = None
         self._repr_info = "Q" + org_module.__repr__()
 
     def forward(self, x_in: torch.Tensor):
         """卷积层的前向传播,但加入了input和weight量化。"""
+        if self.act_scales is not None:
+            x_in = x_in / self.act_scales.to(x_in.device)
         x_in = self.input_quantizer(x_in)
+        if self.act_scales is not None:
+            x_in = x_in * self.act_scales.to(x_in.device)
         weight = self.weight_quantizer(self.weight)
         out = F.conv2d(x_in, weight, self.bias, **self.fwd_kwargs)
         return out

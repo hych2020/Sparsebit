@@ -8,6 +8,9 @@ class DataCache(object):
     def __init__(self, qdesc):
         self.qdesc = qdesc
         self._data_cache = []
+        self._groups = None
+        self._groupsize = None
+        self._oc_ic = None
 
     def update(self, data):
         self._data_cache.append(data)
@@ -28,6 +31,25 @@ class DataCache(object):
             data = torch.cat(self._data_cache, dim=self.qdesc.ch_axis)
             if self.qdesc.ch_axis != 0:
                 data = data.transpose(0, self.qdesc.ch_axis)
+            if self.qdesc.target == QuantTarget.WEIGHT:
+                if self.qdesc.groupsize != -1:
+                    oc = data.shape[0]
+                    ic = data.shape[1]
+                    if ic % self.qdesc.groupsize != 0:
+                        print("warning: channels is not an integer multiple of groupsize, set groupsize as number of channels")
+                        groupsize = ic
+                    else:
+                        groupsize = self.qdesc.groupsize
+                    groups = ic // groupsize
+                    self._groups = groups
+                    self._groupsize = groupsize
+                    self._oc_ic = (oc, ic)
+                    assert len(data.shape) in [2, 4]
+                    # if len(data.shape) == 2:
+                    #     data = data.reshape(oc*groups, groupsize)
+                    # else:
+                    #     data = data.reshape(oc*groups, groupsize, data.shape[2], data.shape[3])
+                    data = data.reshape(oc*ic, -1)
             data = data.flatten(1)
         elif granularity == Granularity.LAYERWISE:
             data = torch.cat([d.reshape(-1) for d in self._data_cache], axis=0)
@@ -85,3 +107,7 @@ class Observer(nn.Module):
     @property
     def is_symmetric(self):
         return self.qdesc.is_symmetric
+
+    @property
+    def groupsize(self):
+        return self.qdesc.groupsize

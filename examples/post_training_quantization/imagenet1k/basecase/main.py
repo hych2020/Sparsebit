@@ -20,6 +20,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 
+from dataset import DATASET as imagenet_dataset
 from sparsebit.quantization import QuantModel, parse_qconfig
 
 model_names = sorted(
@@ -66,7 +67,7 @@ parser.add_argument(
 parser.add_argument(
     "-b",
     "--batch-size",
-    default=256,
+    default=128,
     type=int,
     metavar="N",
     help="mini-batch size (default: 256), this is the total "
@@ -158,15 +159,27 @@ def main():
         print("=> creating model '{}'".format(args.arch))
         model = models.__dict__[args.arch]()
 
+    torch.manual_seed(0)
+    torch.cuda.manual_seed(0)
+    torch.cuda.manual_seed_all(0)
+
     qconfig = parse_qconfig(args.qconfig)
     qmodel = QuantModel(model, config=qconfig)
-
+    qmodel.model.conv1_bn.input_quantizer.set_bit(8)
+    qmodel.model.conv1_bn.weight_quantizer.set_bit(8)
+    qmodel.model.avgpool.input_quantizer.set_bit(8)
+    qmodel.model.fc.input_quantizer.set_bit(8)
+    qmodel.model.fc.weight_quantizer.set_bit(8)
+    qmodel.model.fc.weight_quantizer.qdesc._groupsize = -1
+    #from IPython import embed;embed();exit(1)
     if torch.cuda.is_available():
+        #model.cuda()
         qmodel.cuda()
 
-    cudnn.benchmark = True
+    cudnn.benchmark = False
 
     # Data loading code
+    """
     traindir = os.path.join(args.data, "train")
     valdir = os.path.join(args.data, "val")
     normalize = transforms.Normalize(
@@ -210,23 +223,61 @@ def main():
         pin_memory=True,
         sampler=None,
     )
+    """
+    normalize = transforms.Normalize(
+        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+    )
+    train_transforms = transforms.Compose(
+        [
+            transforms.RandomResizedCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
+    val_transforms = transforms.Compose(
+        [
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
 
+    train_dataset = imagenet_dataset(val_transforms, mode="train")
+    val_dataset = imagenet_dataset(val_transforms, mode="validation", size=50000)
+    calib_loader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=args.batch_size,
+        shuffle=True,
+        num_workers=args.workers,
+        pin_memory=True,
+    )
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers,
+        pin_memory=True,
+    )
     # a calibration process
-    calibration_size = 256
+    calibration_size = 128
     qmodel.prepare_calibration()
     qmodel.eval()
     forward_calibration(qmodel, calib_loader, calibration_size)
-    qmodel.calc_qparams()
-
+    with torch.no_grad():
+        qmodel.calc_qparams()
+    #from IPython import embed;embed();#exit(1)
     if qconfig.SCHEDULE.BN_TUNING:
         with qmodel.batchnorm_tuning():
             forward_calibration(qmodel, calib_loader, calibration_size)
 
     qmodel.set_quant(w_quant=True, a_quant=True)
     criterion = nn.CrossEntropyLoss()
+    #acc1 = validate(val_loader, model, criterion, args)
     acc1 = validate(val_loader, qmodel, criterion, args)
 
-    qmodel.export_onnx(torch.randn(1, 3, 224, 224), name="q{}.onnx".format(args.arch))
+    #qmodel.export_onnx(torch.randn(1, 3, 224, 224), name="q{}.onnx".format(args.arch))
 
 
 def forward_calibration(model, calib_loader, calib_size):

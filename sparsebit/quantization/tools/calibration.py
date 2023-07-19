@@ -2,7 +2,7 @@ import copy
 import torch
 from functools import partial
 
-from sparsebit.quantization.modules import QuantOpr
+from sparsebit.quantization.modules import QuantOpr, QConv2d, QLinear
 from sparsebit.quantization.quantizers.adaround import reconstruct_qlayer
 from .graph_wrapper import GraphVisitor, fx_symbolic_trace
 from .tensor_wrapper import to_cpu, to_device, to_detach
@@ -106,11 +106,43 @@ class CalibrationRunner(object):
             and getattr(module, "input_quantizer", None)
             and not module.input_quantizer.fake_fused
         ):
+            if isinstance(module, (QConv2d,)):
+                assert len(node.all_input_nodes)==1
+                inp_node = node.all_input_nodes[0]
+                inp_tensors = self.builder.storage.get_output(inp_node.target)
+                act_scales = None
+                for inp_tensor in inp_tensors:
+                    assert isinstance(inp_tensor, torch.Tensor)
+                    data_c_first = inp_tensor.transpose(0, 1).flatten(1)
+                    abs_max = torch.max(data_c_first.cuda().abs(), axis=1)[0].cpu()
+                    if act_scales is None:
+                        act_scales = abs_max
+                    else:
+                        act_scales = torch.max(act_scales, abs_max)
+                w_scales = module.weight.transpose(0, 1).flatten(1).abs().max(axis=1)[0].clamp(min=1e-5).cpu()
+                alpha=0.5
+                scales = (act_scales.pow(alpha) / w_scales.pow(1-alpha)).clamp(min=1e-5).detach()
+                #scales = (act_scales * 10).clamp(min=1e-5).detach()
+                groupsize=32
+                channels = scales.shape[0]
+                if channels % groupsize != 0:
+                    groupsize = channels
+                scales = scales.reshape(-1, groupsize).max(dim=1)[0]
+                scales = scales.reshape(-1, 1).repeat(1, groupsize).reshape(-1)
+                dst_shape = [1] * len(inp_tensor.shape)
+                dst_shape[1] = -1
+                scales = scales.reshape(dst_shape)
+                module.act_scales = scales
+                #module.weight.data *= scales.to(module.weight.device)
+                #from IPython import embed;embed();exit(1)
+            else:
+                scales = 1.0
+            #scales = 1.0
             for inp_node in node.all_input_nodes:
                 inp_tensors = self.builder.storage.get_output(inp_node.target)
                 for inp_tensor in inp_tensors:
                     if isinstance(inp_tensor, torch.Tensor):
-                        module.input_quantizer.update_observer(inp_tensor)
+                        module.input_quantizer.update_observer(inp_tensor/scales)
             module.input_quantizer.calc_qparams()
             module.input_quantizer.observer.data_cache.reset()
 
