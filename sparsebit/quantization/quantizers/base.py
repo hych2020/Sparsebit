@@ -131,6 +131,8 @@ class Quantizer(nn.Module, abc.ABC):
         elif self.qdesc.scheme in [
             torch.per_channel_affine,
             torch.per_channel_symmetric,
+            "per-group-symmetric",
+            "per-group-affine",
         ]:
             info += " scale=[{:.4f}, {:.4f}], zp=[{}, {}]".format(
                 self.scale.min(),

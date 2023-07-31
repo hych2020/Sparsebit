@@ -7,6 +7,17 @@ from sparsebit.quantization.quantizers.quant_tensor import STE
 from sparsebit.quantization.common import Backend, Granularity
 
 
+@torch.no_grad()
+def qdq(x_f, scale, zero_point, qdesc):
+    qmin, qmax = qdesc.qrange
+    zp = zero_point.round()
+    scale = scale.reshape(-1, 1)
+    zp = zp.reshape(-1, 1)
+    x_q = torch.clamp((x_f / scale).round() + zp, qmin, qmax)
+    x_dq = (x_q - zp) * scale
+    return x_dq
+
+
 @register_observer
 class Observer(BaseObserver):
     TYPE = "mse"
@@ -51,7 +62,7 @@ class Observer(BaseObserver):
             cur_min_val = min_val * (1.0 - (i * 0.01))
             cur_max_val = max_val * (1.0 - (i * 0.01))
             scale, zero_point = self.calc_qparams_with_minmax(cur_min_val, cur_max_val)
-            x_dq = STE.apply(x_f, scale, zero_point, self.qdesc, Backend.VIRTUAL)
+            x_dq = qdq(x_f, scale, zero_point, self.qdesc)
             loss = mse_loss(x_f, x_dq, self.granularity)
             if self.granularity in [Granularity.CHANNELWISE, Granularity.GROUPWISE]:
                 best_scale[loss < loss_min] = scale[loss < loss_min]

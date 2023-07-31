@@ -1,0 +1,38 @@
+BACKEND: virtual
+SCHEDULE:
+  FUSE_BN: True
+W:
+  QSCHEME: per-group-affine
+  QUANTIZER:
+    TYPE: uniform
+    BIT: 4
+    GROUP_SIZE: 8
+  OBSERVER:
+    TYPE: MSE
+  SPECIFIC: [{
+    "model_0_conv": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_24": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_25": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_26": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_1_*": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_2_*": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_3_*": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_4_*": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+    "model_5_*": ["QUANTIZER.BIT", 8, "OBSERVER.TYPE", "MINMAX", "QSCHEME", "per-channel-affine", "QUANTIZER.GROUP_SIZE", -1],
+  }]
+A:
+  QSCHEME: per-tensor-affine
+  QUANTIZER:
+    TYPE: uniform
+    BIT: 8
+    # GROUP_SIZE: 8
+  OBSERVER:
+    TYPE: MINMAX
+    LAYOUT: NCHW
+  SPECIFIC: [{
+    "model_0_conv": ["QUANTIZER.DISABLE", True],
+    "model_24": ["QUANTIZER.BIT", 8],
+    "model_25": ["QUANTIZER.BIT", 8],
+    "model_26": ["QUANTIZER.BIT", 8],
+  }]
+

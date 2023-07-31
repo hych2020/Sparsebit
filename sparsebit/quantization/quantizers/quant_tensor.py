@@ -184,9 +184,14 @@ def ort_fake_quant(x_f, scale, zero_point, qdesc):
             )
         elif qdesc.granularity == Granularity.GROUPWISE:
             origin_shape = x_f.shape
-            grouped_shape = torch.Size([scale.numel(), -1])
-            scale = scale.reshape(grouped_shape)
-            zero_point = zero_point.reshape(grouped_shape)
+            if qdesc.target == QuantTarget.FEATURE:
+                grouped_shape = torch.Size([x_f.shape[0], scale.numel(), -1])
+                grouped_qparam_shape = torch.Size([1, scale.numel(), -1])
+            else:
+                grouped_shape = torch.Size([scale.numel(), -1])
+                grouped_qparam_shape = torch.Size([scale.numel(), -1])
+            scale = scale.reshape(grouped_qparam_shape)
+            zero_point = zero_point.reshape(grouped_qparam_shape)
             x_f = x_f.reshape(grouped_shape)
 
             x_dq = fake_quant_kernel.quant_perchannel_forward(
@@ -207,10 +212,12 @@ def ort_fake_quant(x_f, scale, zero_point, qdesc):
             origin_shape = x_f.shape
             if qdesc.target == QuantTarget.FEATURE:
                 grouped_shape = torch.Size([x_f.shape[0], scale.numel(), -1])
+                grouped_qparam_shape = torch.Size([1, scale.numel(), -1])
             else:
                 grouped_shape = torch.Size([scale.numel(), -1])
-            scale = scale.reshape(grouped_shape)
-            zp = zp.reshape(grouped_shape)
+                grouped_qparam_shape = torch.Size([scale.numel(), -1])
+            scale = scale.reshape(grouped_qparam_shape)
+            zp = zp.reshape(grouped_qparam_shape)
             x_f = x_f.reshape(grouped_shape)
             x_q = torch.clamp((x_f / scale).round() + zp, qmin, qmax)
             x_dq = (x_q - zp) * scale

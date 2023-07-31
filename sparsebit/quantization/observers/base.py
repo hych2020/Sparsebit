@@ -44,7 +44,7 @@ class DataCache(object):
                 )
                 group_num = max(self._data_cache[0].shape[0] // self.group_size, 1)
                 if group_num == 1:
-                    self.qdesc.set_group_size = self._data_cache[0].shape[0]
+                    self.qdesc.set_group_size(self._data_cache[0].shape[0])
                 data = torch.cat(
                     [d.reshape(group_num, -1) for d in self._data_cache], axis=1
                 )
@@ -57,7 +57,7 @@ class DataCache(object):
                 )
                 group_num = max(self._data_cache[0].shape[1] // self.group_size, 1)
                 if group_num == 1:
-                    self.qdesc.set_group_size = self._data_cache[0].shape[1]
+                    self.qdesc.set_group_size(self._data_cache[0].shape[1])
                 data = torch.cat(
                     [d.reshape(d.shape[0] * group_num, -1) for d in self._data_cache],
                     axis=1,
