@@ -87,7 +87,7 @@ pip install -r yolov5/requirements.txt
   - output conv: model_24/25/26 weight use 8bit
 
 |Model|qconfig|mAP50-95|mAP50|prec|recall|remark|
-|-----|-----|-----|-----|-----|-----|
+|-----|-----|-----|-----|-----|-----|-----|
 |YOLOv5n|float|27.7%|45.6%|57.5%|43.2%|
 |YOLOv5n|4w8f|16.5%|29.3%|47.8%|28.2%|
 |YOLOv5n|4w8f|25.0%|42.7%|57.6%|39.5%|前6个module(4层conv，2个C3 block)8w|
