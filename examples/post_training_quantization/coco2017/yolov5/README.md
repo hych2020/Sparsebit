@@ -90,8 +90,10 @@ pip install -r yolov5/requirements.txt
 |-----|-----|-----|-----|-----|-----|-----|
 |YOLOv5n|float|27.7%|45.6%|57.5%|43.2%|
 |YOLOv5n|4w8f|16.5%|29.3%|47.8%|28.2%|
+|YOLOv5n|4w8f|18.9%|33.5%|48.6%|32.5%|percentile a=0.001|
 |YOLOv5n|4w8f|25.0%|42.7%|57.6%|39.5%|前6个module(4层conv，2个C3 block)8w|
 ||
 |YOLOv5s|float|37.1%|56.6%|66.8%|52.1%|
 |YOLOv5s|4w8f|33.4%|52.3%|64.5%|47.7%|
+|YOLOv5s|4w8f|32.8%|51.8%|64.2%|47.8%|percentile a=0.001|
 |YOLOv5s|4w8f|35.7%|55.3%|65.8%|50.5%|前6个module(4层conv，2个C3 block)8w|
