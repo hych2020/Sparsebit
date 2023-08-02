@@ -1,8 +1,10 @@
 import copy
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from functools import partial
 
-from sparsebit.quantization.modules import QuantOpr
+from sparsebit.quantization.modules import QuantOpr, QConv2d
 from sparsebit.quantization.quantizers.adaround import reconstruct_qlayer
 from .graph_wrapper import GraphVisitor, fx_symbolic_trace
 from .tensor_wrapper import to_cpu, to_device, to_detach
@@ -63,7 +65,7 @@ class CalibrationRunner(object):
 
         self.builder = GraphVisitor(self.model, hook_wrapper)
 
-    def layerwise_calibration(self, device, asym=False, w_quant=False, a_quant=False):
+    def layerwise_calibration(self, device, asym=False, w_quant=False, a_quant=False, bias_correction=False):
         """
         asym: enable calibration with all preceding layers quantized
         w_quant: quant the weights in all preceding layers
@@ -88,7 +90,7 @@ class CalibrationRunner(object):
             # forward float output
             float_outputs = self.module_forward(batch_num, node, device)
             self.builder.storage.set_output(node.target, float_outputs)
-            self.run_weight_calibration(node, asym, a_quant=a_quant)
+            self.run_weight_calibration(node, asym, a_quant=a_quant, bias_correction=bias_correction)
             # foward quant output
             if asym:
                 quant_outputs = self.module_forward(
@@ -114,11 +116,35 @@ class CalibrationRunner(object):
             module.input_quantizer.calc_qparams()
             module.input_quantizer.observer.data_cache.reset()
 
-    def run_weight_calibration(self, node, asym=False, a_quant=False):
+    def run_weight_calibration(self, node, asym=False, a_quant=False, bias_correction=False):
         module = getattr(self.model, node.target)
         if isinstance(module, QuantOpr) and getattr(module, "weight_quantizer", None):
             module.weight_quantizer.update_observer(module.weight)
             module.weight_quantizer.calc_qparams()
+            if isinstance(module, QConv2d) and bias_correction:
+                if module.weight_quantizer.qdesc.bit == 8:
+                    pass
+                else:
+                    _storage = self.builder.qstorage if asym else self.builder.storage
+                    inp_tensors = _storage.get_output(node.all_input_nodes[0].target)
+                    weight = module.weight
+                    scale = module.weight_quantizer.scale
+                    zero_point = module.weight_quantizer.zero_point
+                    delta_bias = 0
+                    with torch.no_grad():
+                        qweight = module.weight_quantizer._forward(weight, scale, zero_point)
+                        delta_w = weight - qweight
+                        for inp in inp_tensors:
+                            oup_diff = F.conv2d(inp.to(delta_w.device), delta_w, **module.fwd_kwargs)
+                            oc = oup_diff.shape[1]
+                            oup_diff = oup_diff.transpose(0, 1).reshape(oc, -1).mean(-1)
+                            delta_bias += oup_diff
+                        delta_bias /= (len(inp_tensors))
+                    if module.bias is not None:
+                        module.bias.data += delta_bias
+                    else:
+                        module.bias = nn.Parameter(delta_bias)
+
             if module.weight_quantizer.TYPE.lower() == "adaround":
                 assert (
                     len(node.all_input_nodes) == 1

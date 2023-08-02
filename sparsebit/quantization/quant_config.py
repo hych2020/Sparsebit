@@ -26,6 +26,7 @@ _C.W.OBSERVER.PERCENTILE.ALPHA = 0.001  # alpha for percentile observer
 _C.W.OBSERVER.ACIQ = CN()
 _C.W.OBSERVER.ACIQ.DISTRIBUTION = "GAUS"  # "LAPLACE"/"GAUS"
 _C.W.SPECIFIC = []
+_C.W.BIAS_CORRECTION = False
 
 _C.A = CN()
 _C.A.QSCHEME = None  # support per-[channel/tensor]-[affine/symmetric]
