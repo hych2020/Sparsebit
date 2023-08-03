@@ -116,8 +116,8 @@ pip install -r yolov5/requirements.txt
   - Scheme: asymmetric
   - Observer: MSE
 - specical
-  - first conv: model_0_conv weight use 8bit
-  - output conv: model_24/25/26 weight use 8bit
+  - first conv: model_0_conv use 8bit
+  - output conv: model_24/25/26 use 8bit
 
 |Model|qconfig|mAP50-95|mAP50|prec|recall|remark|
 |-----|-----|-----|-----|-----|-----|-----|
