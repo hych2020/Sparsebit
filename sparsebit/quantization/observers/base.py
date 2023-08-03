@@ -116,7 +116,7 @@ class Observer(nn.Module):
             scale = (max_val_pos - min_val_neg) / float(qmax - qmin)
             scale = torch.maximum(scale, torch.tensor(1e-6))
             zero_point = torch.round(-min_val_neg / scale)
-        assert len(self.data_cache) == 0, "free data cache after calc_qparams"
+        #assert len(self.data_cache) == 0, "free data cache after calc_qparams"
         return scale, zero_point
 
     @property

@@ -38,9 +38,15 @@ class Observer(BaseObserver):
         self.max_val = max_val.to(self.device)
         return self.min_val, self.max_val
 
-    def calc_qparams(self):
+    def calc_qparams(self, filter_mode="none"):
         data_c_first = self.data_cache.get_data_for_calibration(self.granularity)
-        self.data_cache.reset()
+        if filter_mode == "pos":
+            data_c_first = torch.maximum(data_c_first, torch.zeros_like(data_c_first))
+        elif filter_mode == "neg":
+            data_c_first = torch.minimum(data_c_first, torch.zeros_like(data_c_first))
+
+        if filter_mode == "none":
+            self.data_cache.reset()
         min_val, max_val = self.calc_minmax(data_c_first)
         x_f = data_c_first.to(self.device)
         if self.granularity in [Granularity.CHANNELWISE, Granularity.GROUPWISE]:
@@ -75,5 +81,6 @@ class Observer(BaseObserver):
                     best_zero_point = zero_point
             else:
                 raise NotImplementedError
-        assert len(self.data_cache) == 0, "free data cache after calc_qparams"
+        if filter_mode=="none":
+            assert len(self.data_cache) == 0, "free data cache after calc_qparams"
         return best_scale, best_zero_point
