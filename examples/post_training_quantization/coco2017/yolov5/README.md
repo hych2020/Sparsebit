@@ -125,14 +125,18 @@ pip install -r yolov5/requirements.txt
 |YOLOv5n|4w4f|0.24%|0.40%|0.75%|0.27%||
 |YOLOv5n|4w4f|12.8%|23.3%|58.9%|17.7%|F: 5bit|
 |YOLOv5n|4w4f|19.9%|35.2%|54.9%|32.4%|F: pwlq|
+|YOLOv5n|4w4f|16.5%|29.7%|59.4%|24.1%|W: symmetric; F: pwlq|
 |YOLOv5n|4w4f|20.1%|35.2%|55.4%|32.4%|F: pwlq & gs=8|
 |YOLOv5n|4w4f|23.7%|41.2%|56.9%|38.2%|F: pwlq; 前6module:8bit|
 |YOLOv5n|4w4f|24.8%|42.2%|57.2%|39.3%|W: gs=1; F: pwlq & channelwise; 前6module:8bit|
+|YOLOv5n|4w4f|21.4%|36.8%|67.3%|26.5%|W: gs=1 & symmetric; F: pwlq & channelwise; 前6module:8bit|
 ||
 |YOLOv5s|float|37.1%|56.6%|66.8%|52.1%|
 |YOLOv5s|4w4f|0.00%|0.00%|0.00%|0.16%||
 |YOLOv5s|4w4f|8.25%|14.8%|61.3%|10.1%|F: 5bit|
 |YOLOv5s|4w4f|31.5%|50.1%|62.6%|45.5%|F: pwlq|
+|YOLOv5s|4w4f|28.4%|45.9%|63.7%|39.7%|W: symmetric; F: pwlq|
 |YOLOv5s|4w4f|31.6%|50.1%|62.8%|45.4%|F: pwlq & gs=8|
 |YOLOv5s|4w4f|33.8%|53.2%|63.3%|48.7%|F: pwlq; 前6module:8bit|
 |YOLOv5s|4w4f|34.5%|54.0%|64.9%|49.3%|W: gs=1; F: pwlq & channelwise; 前6module:8bit|
+|YOLOv5s|4w4f|31.6%|49.9%|67.3%|41.6%|W: gs=1 & symmetric; F: pwlq & channelwise; 前6module:8bit|
