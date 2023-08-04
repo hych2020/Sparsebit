@@ -92,15 +92,19 @@ pip install -r yolov5/requirements.txt
 |YOLOv5n|4w8f|16.5%|29.3%|47.8%|28.2%|
 |YOLOv5n|4w8f|18.9%|33.5%|48.6%|32.5%|percentile a=0.001|
 |YOLOv5n|4w8f|24.9%|42.0%|56.7%|39.3%|wi bias correction|
+|YOLOv5n|4w8f|21.1%|36.5%|57.6%|32.0%|wi bias correction & symmetric|
 |YOLOv5n|4w8f|25.0%|42.7%|57.6%|39.5%|前6个module(4层conv，2个C3 block)8w|
 |YOLOv5n|4w8f|26.1%|43.9%|58.1%|40.8%|前6个module(4层conv，2个C3 block)8w & bc|
+|YOLOv5n|4w8f|23.4%|40.4%|58.8%|35.6%|前6个module(4层conv，2个C3 block)8w & bc & symmetric|
 ||
 |YOLOv5s|float|37.1%|56.6%|66.8%|52.1%|
 |YOLOv5s|4w8f|33.4%|52.3%|64.5%|47.7%|
 |YOLOv5s|4w8f|32.8%|51.8%|64.2%|47.8%|percentile a=0.001|
 |YOLOv5s|4w8f|35.3%|54.8%|65.8%|50.0%|wi bias correction|
+|YOLOv5s|4w8f|31.8%|50.5%|64.5%|45.1%|wi bias correction & symmetric|
 |YOLOv5s|4w8f|35.7%|55.3%|65.8%|50.5%|前6个module(4层conv，2个C3 block)8w|
 |YOLOv5s|4w8f|36.0%|55.6%|66.2%|50.6%|前6个module(4层conv，2个C3 block)8w & bc|
+|YOLOv5s|4w8f|33.6%|53.2%|65.9%|47.8%|前6个module(4层conv，2个C3 block)8w & bc & symmetric|
 
 ### 4w4f
 - Weight bit: 4
